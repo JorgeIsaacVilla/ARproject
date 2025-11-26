@@ -80,9 +80,13 @@
 
       // Contexto AR
       arToolkitContext = new THREEx.ArToolkitContext({
+
+
         cameraParametersUrl:
-          "https://raw.githubusercontent.com/AR-js-org/AR.js/master/three.js/data/camera_para.dat",
+          "repo/camera_para.dat",
         detectionMode: "mono"
+
+        
       });
 
       arToolkitContext.init(function () {
@@ -96,7 +100,7 @@
       new THREEx.ArMarkerControls(arToolkitContext, markerRoot, {
         type: "pattern",
         patternUrl:
-          "https://raw.githubusercontent.com/AR-js-org/AR.js/master/three.js/data/patt.hiro"
+          "repo/patt.hiro"
       });
 
       // Luz
