@@ -7,8 +7,8 @@
     body {
       margin: 0;
       overflow: hidden;
-      font-family: system-ui, sans-serif;
       background: #000;
+      font-family: system-ui, sans-serif;
     }
     #info {
       position: fixed;
@@ -25,13 +25,13 @@
 </head>
 <body>
   <div id="info">
-    Apunta la cámara al marcador (hiro) para ver el cubo 3D.
+    Apunta la cámara al marcador HIRO para ver el cubo 3D.
   </div>
 
   <!-- Three.js -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
 
-  <!-- AR.js versión Three.js -->
+  <!-- AR.js (Three.js version) -->
   <script src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js/three.js/build/ar-threex.js"></script>
 
   <script>
@@ -46,24 +46,20 @@
       // Escena
       scene = new THREE.Scene();
 
-      // Cámara (AR.js controla la proyección)
+      // Cámara
       camera = new THREE.Camera();
       scene.add(camera);
 
       // Renderer
-      renderer = new THREE.WebGLRenderer({
-        antialias: true,
-        alpha: true
-      });
+      renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
       renderer.setPixelRatio(window.devicePixelRatio);
       renderer.setSize(window.innerWidth, window.innerHeight);
-      renderer.outputEncoding = THREE.sRGBEncoding;
       renderer.domElement.style.position = "absolute";
-      renderer.domElement.style.top = "0px";
-      renderer.domElement.style.left = "0px";
+      renderer.domElement.style.top = "0";
+      renderer.domElement.style.left = "0";
       document.body.appendChild(renderer.domElement);
 
-      // Fuente de video (webcam)
+      // Fuente de video
       arToolkitSource = new THREEx.ArToolkitSource({
         sourceType: "webcam"
       });
@@ -83,42 +79,35 @@
       window.addEventListener("resize", onResize);
 
       // Contexto AR
-        arToolkitContext = new THREEx.ArToolkitContext({
+      arToolkitContext = new THREEx.ArToolkitContext({
         cameraParametersUrl:
-            "https://raw.githubusercontent.com/AR-js-org/AR.js/master/three.js/data/camera_para.dat",
+          "https://raw.githubusercontent.com/AR-js-org/AR.js/master/three.js/data/camera_para.dat",
         detectionMode: "mono"
-        });
+      });
 
       arToolkitContext.init(function () {
         camera.projectionMatrix.copy(arToolkitContext.getProjectionMatrix());
       });
 
-      // Raíz del marcador
+      // Marcador
       markerRoot = new THREE.Group();
       scene.add(markerRoot);
 
-      // Control del marcador (pattern)
-      const markerControls = new THREEx.ArMarkerControls(
-        arToolkitContext,
-        markerRoot,
-        {
-          type: "pattern",
-          // aquí luego cambias por tu propio .patt (por ejemplo mona.patt)
-          patternUrl:
-            "https://cdn.jsdelivr.net/gh/AR-js-org/AR.js/three.js/data/patt.hiro"
-            //"src/PruebaQr.patt"
-        }
-      );
+      new THREEx.ArMarkerControls(arToolkitContext, markerRoot, {
+        type: "pattern",
+        patternUrl:
+          "https://raw.githubusercontent.com/AR-js-org/AR.js/master/three.js/data/patt.hiro"
+      });
 
       // Luz
       const light = new THREE.HemisphereLight(0xffffff, 0x444444, 1);
       scene.add(light);
 
-      // Objeto 3D simple (cubo)
+      // Cubo
       const geo = new THREE.BoxGeometry(1, 1, 1);
       const mat = new THREE.MeshNormalMaterial();
       const cube = new THREE.Mesh(geo, mat);
-      cube.position.y = 0.5; // que se vea encima del plano del marcador
+      cube.position.y = 0.5;
       markerRoot.add(cube);
     }
 
@@ -137,7 +126,6 @@
       update();
       render();
     }
-
   </script>
 </body>
 </html>
