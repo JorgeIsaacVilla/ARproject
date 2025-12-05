@@ -25,6 +25,12 @@
     #ar-video {
       display: none;
     }
+    
+    canvas, video {
+      width: 100% !important;
+      height: 100% !important;
+      object-fit: cover; /* Para que la cámara llene todo sin bandas negras */
+    }
   </style>
 </head>
 <body>
